@@ -7,7 +7,9 @@ import router from "./router";
 import cookieParser from "cookie-parser";
 
 // Load environment variables from .env file
-dotenv.config();
+dotenv.config({
+  path: './.env'
+});
 
 // Initialize express application
 const app = express();
