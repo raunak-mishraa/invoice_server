@@ -15,7 +15,7 @@ dotenv.config({
 const app = express();
 
 // Ensure the PORT is a number
-const PORT = Number(process.env.PORT) || 5000;  // Convert to number if available, otherwise fallback to 5000
+// const PORT = Number(process.env.PORT) || 5000;  // Convert to number if available, otherwise fallback to 5000
 
 // Middleware for parsing the request body
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -43,13 +43,14 @@ app.use(router);
 
 try {
   // Attempt to connect to the database
-  ConnectDB();
-
-  // Start the server and ensure it's listening on the correct port and interface
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-} catch (e: any) {
+  ConnectDB()
+  .then(() =>{
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
+    });
+  })
+  .catch((e) => console.log("MongoDB connection failed", e.message));
+  } catch (e: any) {
   // Log an error if the server fails to start
   console.log("Failed to start the server:", e.message);
 }
